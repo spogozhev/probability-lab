@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Slider from './Slider.jsx'
+import CountingTree from './CountingTree.jsx'
 import { factorial, combinations, permutationsOf, combinationsOf } from '../utils/stats.js'
 
 const COLORS = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#a855f7', '#f97316', '#14b8a6']
@@ -143,6 +144,8 @@ function Counting() {
           </p>
         </div>
       </div>
+
+      <CountingTree />
     </div>
   )
 }
