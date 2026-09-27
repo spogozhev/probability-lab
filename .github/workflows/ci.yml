@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches-ignore:
+      - main # основная ветка собирается в workflow деплоя
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Check bundle
+        run: |
+          test -f dist/index.html || { echo "dist/index.html не создан"; exit 1; }
+          grep -q "assets/index-" dist/index.html || { echo "в dist/index.html нет ссылок на ассеты"; exit 1; }
+          echo "Сборка в порядке:"
+          ls -lh dist/assets
