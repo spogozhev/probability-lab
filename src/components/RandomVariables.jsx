@@ -24,6 +24,7 @@ function RandomVariables() {
     if (Number.isNaN(v)) return
     if (selected.size === 0) return
     setValues((prev) => prev.map((val, i) => (selected.has(i) ? v : val)))
+    setSelected(new Set())
     setSample([])
   }
 

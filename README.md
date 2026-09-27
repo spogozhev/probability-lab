@@ -1,27 +1,96 @@
-- Basic Probability
-  - Chance Events
-  - Expectation
-  - Variance
-- Probability Distributions
-  - Random Variables
-  - Discrete and Continuous
-  - Central Limit Theorem
-- Compound Probability
-  - Set Theory
-  - Counting
-  - Conditional Probability
-- Frequentist Inference
-  - Point Estimation
-  - Confidence Interval
-  - The Bootstrap
-- Bayesian Inference
-  - Bayes' Theorem
-  - Likelihood Function
-  - Prior to Posterior
-- Regression Analysis
-  - Ordinary Least Squares
-  - Correlation
-  - Analysis of Variance
+# Теория вероятностей :: Интерактивные примеры
 
+<https://apmath.info/pt/>
 
+Набор интерактивных симуляторов по теории вероятностей и математической статистике. 
 
+Каждый симулятор — «песочница»: меняйте параметры эксперимента и наблюдайте, как ведёт себя случайность — от сходимости частоты по закону больших чисел до байесовского обновления убеждений.
+
+## Разделы
+
+- **Основы теории вероятностей** (Basic Probability)
+  - Случайные события (Chance Events) — броски монеты с настраиваемой вероятностью, сходимость частоты
+  - Математическое ожидание (Expectation) — несимметричный кубик, E[X] = Σ x·P(x)
+  - Дисперсия (Variance) — колода из 10 карт, Var(X) = E[(X − E[X])²]
+- **Вероятностные распределения** (Probability Distributions)
+  - Случайные величины (Random Variables) — конструктор дискретной случайной величины на сетке 4×4
+  - Дискретные и непрерывные (Discrete and Continuous) — каталог из 13 распределений с f(x) и F(x)
+  - Центральная предельная теорема (Central Limit Theorem) — гистограмма выборочных средних против нормальной кривой
+- **Вероятность сложного события** (Compound Probability)
+  - Теория множеств (Set Theory) — круги Венна с перетаскиванием и операциями
+  - Комбинаторика (Counting) — мешок с шариками: все перестановки и сочетания
+  - Дерево вариантов — граф перестановок/сочетаний с анимацией построения
+  - Условная вероятность (Conditional Probability) — сужение выборочного пространства
+  - Калькулятор множеств (Set Calculator) — вычислитель выражений A′∪(B∩C)′ с попиксельной закраской результата
+- **Частотный вывод** (Frequentist Inference)
+  - Точечное оценивание (Point Estimation) — оценка числа π методом Монте-Карло
+  - Доверительный интервал (Confidence Interval) — серия интервалов и эмпирическая доля попаданий
+  - Бутстрэп (The Bootstrap) — ресэмплинг с возвращением и стандартная ошибка
+- **Байесовский вывод** (Bayesian Inference)
+  - Теорема Байеса (Bayes' Theorem) — тест на редкую болезнь на выборке из 10 000 человек
+  - Функция правдоподобия (Likelihood Function) — L(θ | x) для шести моделей
+  - От априорного к апостериорному (Prior to Posterior) — бета-распределение и броски монеты
+- **Регрессионный анализ** (Regression Analysis)
+  - Метод наименьших квадратов (Ordinary Least Squares) — редактируемые точки, квартет Энскомба
+  - Корреляция (Correlation) — генератор коррелированной выборки, две линии регрессии
+  - Дисперсионный анализ (Analysis of Variance) — однофакторный ANOVA с таблицей и F-критерием
+
+## Запуск
+
+Нужен Node.js 18+.
+
+```bash
+npm install    # установка зависимостей
+npm run dev    # сервер разработки
+npm run build  # продуктивная сборка в dist/
+npm run preview
+```
+
+Базовый путь приложения задан в `vite.config.js` (`base: '/pt/'`): сервер разработки откроется на `http://localhost:5173/pt/`, и собранные файлы рассчитаны на размещение в подкаталоге `/pt/`. При необходимости измените `base`.
+
+Маршрутизация — hash-based, поэтому для статического размещения достаточно любого сервера файлов: внутренние ссылки вида `#/basic/chance` не требуют настройки сервера.
+
+## Прямые ссылки на симуляторы
+
+Активный симулятор хранится в URL — на каждый можно дать ссылку:
+
+| Раздел | Маршруты |
+|---|---|
+| Основы | `#/basic/chance`, `#/basic/expectation`, `#/basic/variance` |
+| Распределения | `#/distributions/random`, `#/distributions/disccont`, `#/distributions/clt` |
+| Сложные события | `#/compound/sets`, `#/compound/counting`, `#/compound/conditional`, `#/compound/calculator` |
+| Частотный вывод | `#/frequentist/point`, `#/frequentist/interval`, `#/frequentist/bootstrap` |
+| Байесовский вывод | `#/bayesian/bayes`, `#/bayesian/likelihood`, `#/bayesian/prior` |
+| Регрессия | `#/regression/ols`, `#/regression/correlation`, `#/regression/anova` |
+
+Открытие адреса раздела без id симулятора (`#/basic`) перенаправляет на симулятор по умолчанию; несуществующий id — тоже.
+
+## Структура проекта
+
+```
+src/
+├── main.jsx              # входная точка, HashRouter
+├── App.jsx               # маршруты: /:глава и /:глава/:simId
+├── index.css             # Tailwind + CSS-анимации дерева вариантов
+├── pages/                # 6 глав — конфигурации над SimulatorPage
+├── components/
+│   ├── Layout.jsx        # шапка, навигация, футер
+│   ├── SimulatorPage.jsx # оболочка главы: активный таб в URL
+│   ├── GameSidebar.jsx   # сайдбар с табами симуляторов
+│   ├── Plot.jsx          # самописный SVG-график (оси, сетка, clipPath)
+│   ├── Slider.jsx        # ползунок параметров
+│   └── *.jsx             # 19 симуляторов
+└── utils/
+    └── stats.js          # математика: гамма/бета-функции, 13 распределений,
+                          # генераторы случайных величин, t-квантили, p-values,
+                          # МНК, корреляция, комбинаторика
+```
+
+## Технологии
+
+- [React 18](https://react.dev) + [Vite 5](https://vitejs.dev)
+- [Tailwind CSS 3](https://tailwindcss.com)
+- [lucide-react](https://lucide.dev) — иконки
+- [react-router-dom](https://reactrouter.com) (HashRouter)
+
+Графики рисуются вручную через SVG, закраска областей в «Калькуляторе множеств» — через Canvas `ImageData`. Внешних библиотек визуализации и статистики нет.
