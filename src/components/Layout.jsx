@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import buildMeta from '../buildMeta.js'
 
 const navItems = [
   { to: '/', label: 'Главная', end: true },
@@ -9,6 +10,42 @@ const navItems = [
   { to: '/bayesian', label: 'Байесовский' },
   { to: '/regression', label: 'Регрессия' },
 ]
+
+function formatBuildTime(iso) {
+  const d = new Date(iso)
+  return Number.isNaN(d.getTime())
+    ? null
+    : d.toLocaleString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      })
+}
+
+function BuildInfo() {
+  const time = formatBuildTime(buildMeta.builtAt)
+  return (
+    <div className="mt-1 text-xs text-gray-400">
+      v{buildMeta.version}
+      {' · '}
+      {buildMeta.repoUrl && buildMeta.commit !== 'unknown' ? (
+        <a
+          href={`${buildMeta.repoUrl}/commit/${buildMeta.commit}`}
+          target="_blank"
+          rel="noreferrer"
+          className="hover:text-indigo-600 transition-colors"
+        >
+          сборка {buildMeta.commit}
+        </a>
+      ) : (
+        <span>сборка {buildMeta.commit}</span>
+      )}
+      {time ? ` · ${time}` : ''}
+    </div>
+  )
+}
 
 function Layout() {
   return (
@@ -69,6 +106,7 @@ function Layout() {
       <footer className="bg-white border-t border-gray-200 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-500">
           Теория вероятностей :: Интерактивные примеры
+          <BuildInfo />
         </div>
       </footer>
     </div>

@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches-ignore:
-      - main # основная ветка собирается в workflow деплоя
+      - master # основная ветка собирается в workflow деплоя
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
